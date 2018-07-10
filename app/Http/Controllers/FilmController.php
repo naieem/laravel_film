@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Film;
+use App\Http\Resources\Film as FilmResource;
 class FilmController extends Controller
 {
     /**
@@ -13,7 +14,8 @@ class FilmController extends Controller
      */
     public function index()
     {
-        //
+        $films = Film::paginate(5);
+        return FilmResource::collection($films);
     }
 
     /**
