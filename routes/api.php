@@ -25,6 +25,10 @@ Route::get('films','FilmController@index');
 // =========================================
 Route::get('films/{id}','FilmController@show');
 // =========================================
+// getting single film by complexx query ===
+// =========================================
+Route::post('films/getByComplexQuery','FilmController@getByComplexQuery');
+// =========================================
 // updating film ===========================
 // =========================================
 Route::post('films/{id}','FilmController@update');

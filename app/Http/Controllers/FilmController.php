@@ -15,7 +15,7 @@ class FilmController extends Controller
      */
     public function index()
     {
-        return Film::paginate(5);
+        return Film::paginate(1);
 //        return FilmResource::collection($films);
     }
 
@@ -83,5 +83,14 @@ class FilmController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /** getByComplexQuery
+     * @param Request $request
+     * @param DBClasss $dbclass
+     *
+     */
+    public function getByComplexQuery(Request $request,DBClasss $dbclass){
+        return $dbclass->getBySqlFilter($request);
     }
 }

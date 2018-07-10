@@ -42,4 +42,7 @@ class DBClasss
     public function getFilmById($id){
         return Film::where('id',$id)->get();
     }
+    public function getBySqlFilter(Request $request){
+        return Film::skip($request->skip)->take(1)->get();
+    }
 }
