@@ -32,3 +32,11 @@ Route::post('films/{id}','FilmController@update');
 // registering new user ====================
 // =========================================
 Route::post('user/new','UserController@register');
+// =========================================
+// login user ====================
+// =========================================
+Route::post('user/login','UserController@login');
+// =========================================
+// verify token ====================
+// =========================================
+Route::post('verify/token','UserController@verify')->middleware('jwt-validation');
