@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Library\Services\DBClasss;
 use Illuminate\Http\Request;
 use App\Film;
 use App\Http\Resources\Film as FilmResource;
@@ -14,8 +15,8 @@ class FilmController extends Controller
      */
     public function index()
     {
-        $films = Film::paginate(5);
-        return FilmResource::collection($films);
+        return Film::paginate(5);
+//        return FilmResource::collection($films);
     }
 
     /**
@@ -45,9 +46,9 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,DBClasss $dbclass)
     {
-        //
+        return $dbclass->getFilmById($id);
     }
 
     /**
@@ -68,9 +69,9 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id,DBClasss $dbclass)
     {
-        //
+        return $dbclass->UpdateFilm($request, $id);
     }
 
     /**

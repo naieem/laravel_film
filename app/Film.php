@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Film extends Model
 {
-    //
+    protected $fillable = [
+        'Name', 'Description', 'password',
+    ];
 }

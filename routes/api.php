@@ -16,5 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+// =========================================
+// getting all films =======================
+// =========================================
 Route::get('films','FilmController@index');
+// =========================================
+// getting single film =======================
+// =========================================
 Route::get('films/{id}','FilmController@show');
+// =========================================
+// updating film ===========================
+// =========================================
+Route::post('films/{id}','FilmController@update');
