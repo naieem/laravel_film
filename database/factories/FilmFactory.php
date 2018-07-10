@@ -11,6 +11,7 @@ $factory->define(App\Film::class, function (Faker $faker) {
         'TicketPrice'=>$faker->randomFloat(),
         'Country'=>$faker->country,
         'Genre' => $faker->address,
+        'Slug' => $faker->slug(6,true),
         'Photo'=> $faker->imageUrl()
     ];
 });

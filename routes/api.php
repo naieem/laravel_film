@@ -21,9 +21,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // =========================================
 Route::get('films','FilmController@index');
 // =========================================
-// getting single film =======================
+// getting single film =====================
 // =========================================
 Route::get('films/{id}','FilmController@show');
+// =========================================
+// getting single film by slug =============
+// =========================================
+Route::get('films/getBySlug/{slug}','FilmController@getByslug');
 // =========================================
 // getting single film by complexx query ===
 // =========================================

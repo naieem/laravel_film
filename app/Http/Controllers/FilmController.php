@@ -93,4 +93,13 @@ class FilmController extends Controller
     public function getByComplexQuery(Request $request,DBClasss $dbclass){
         return $dbclass->getBySqlFilter($request);
     }
+
+    /**
+     * getting film information by slug
+     * @param $slug
+     */
+    public function getByslug($slug,DBClasss $dbclass)
+    {
+        return $dbclass->getBySlug($slug);
+    }
 }

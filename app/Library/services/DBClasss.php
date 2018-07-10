@@ -45,4 +45,7 @@ class DBClasss
     public function getBySqlFilter(Request $request){
         return Film::skip($request->skip)->take(1)->get();
     }
+    public function getBySlug($slug){
+        return Film::where('Slug',$slug)->get();
+    }
 }

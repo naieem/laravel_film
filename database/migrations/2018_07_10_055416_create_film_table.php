@@ -22,6 +22,7 @@ class CreateFilmTable extends Migration
             $table->string('TicketPrice');
             $table->string('Country');
             $table->string('Genre');
+            $table->string('Slug');
             $table->string('Photo');
             $table->timestamps();
         });
