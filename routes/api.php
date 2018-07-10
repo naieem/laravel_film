@@ -28,3 +28,7 @@ Route::get('films/{id}','FilmController@show');
 // updating film ===========================
 // =========================================
 Route::post('films/{id}','FilmController@update');
+// =========================================
+// registering new user ====================
+// =========================================
+Route::post('user/new','UserController@register');

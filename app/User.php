@@ -15,15 +15,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'Name', 'Description', 'Rating','TicketPrice'
+        'name', 'email', 'password',
     ];
 
     /**
-     * The attributes that aren't mass assignable.
+     * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $guarded = [
-        'Country','Genre','Photo'
+    protected $hidden = [
+        'password', 'remember_token',
     ];
 }
