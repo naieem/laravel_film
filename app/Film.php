@@ -23,4 +23,8 @@ class Film extends Model
     protected $guarded = [
         'Country','Genre','Photo'
     ];
+    public function comment()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }

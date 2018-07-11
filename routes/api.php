@@ -21,6 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // =========================================
 Route::get('films','FilmController@index');
 // =========================================
+// creating new films ======================
+// =========================================
+Route::post('film/create','FilmController@create');
+// =========================================
 // getting single film =====================
 // =========================================
 Route::get('films/{id}','FilmController@show');

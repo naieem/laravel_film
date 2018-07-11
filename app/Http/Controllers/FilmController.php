@@ -24,9 +24,9 @@ class FilmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request, DBClasss $dbclass)
     {
-        //
+        return response($dbclass->insertNewFilm($request),200);
     }
 
     /**

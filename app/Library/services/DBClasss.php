@@ -40,12 +40,40 @@ class DBClasss
     }
 
     public function getFilmById($id){
-        return Film::where('id',$id)->get();
+        return Film::with('comment')->where('id',$id)->get();
     }
     public function getBySqlFilter(Request $request){
         return Film::skip($request->skip)->take(1)->get();
     }
     public function getBySlug($slug){
         return Film::where('Slug',$slug)->get();
+    }
+    public function insertNewFilm($request){
+        $film =  new Film();
+        $film->Name = $request->Name;
+        $film->Description = $request->Description;
+        $film->Rating = $request->Rating;
+        $film->RealeaseDate = $request->RealeaseDate;
+        $film->TicketPrice = $request->TicketPrice;
+        $film->Country = $request->Country;
+        $film->Genre = $request->Genre;
+        $film->Slug = $request->Slug;
+        $film->Photo = $request->Photo;
+
+        try{
+            $isSaved = $film->save();
+            if($isSaved){
+                return [
+                    'status' => true,
+                    'message' =>'Film saved succesfully'
+                ];
+            }
+        }catch(\Illuminate\Database\QueryException $error){
+            return [
+                'status' => false,
+                'message' =>$error->errorInfo[2]
+            ];
+        }
+
     }
 }
