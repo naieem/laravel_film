@@ -25,6 +25,6 @@ class Film extends Model
     ];
     public function comment()
     {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\Comment','film_id');
     }
 }

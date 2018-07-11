@@ -8,6 +8,7 @@
 namespace App\Library\Services;
 
 use App\Film;
+use App\Comment;
 use Illuminate\Http\Request;
 
 class DBClasss
@@ -46,7 +47,27 @@ class DBClasss
         return Film::skip($request->skip)->take(1)->get();
     }
     public function getBySlug($slug){
-        return Film::where('Slug',$slug)->get();
+        return Film::with('comment')->where('Slug',$slug)->get();
+    }
+    public function addComment($request){
+        $comment = new Comment();
+        $comment->Name = $request->Name;
+        $comment->film_id = $request->film_id;
+        $comment->Comment = $request->Comment;
+        try{
+            $isSaved = $comment->save();
+            if($isSaved){
+                return [
+                    'status' => true,
+                    'message' =>'Comment added succesfully'
+                ];
+            }
+        }catch(\Illuminate\Database\QueryException $error){
+            return [
+                'status' => false,
+                'message' =>$error->errorInfo[2]
+            ];
+        }
     }
     public function insertNewFilm($request){
         $film =  new Film();

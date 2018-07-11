@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use Validator;
 use JWTAuth;
 use JWTFactory;
 use Illuminate\Http\Response;
+
 class UserController extends Controller
 {
     /**
@@ -21,20 +23,31 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users',
             'name' => 'required',
-            'password'=> 'required'
+            'password' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-        User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => bcrypt($request->get('password')),
-        ]);
-        $user = User::first();
-        $token = JWTAuth::fromUser($user);
 
-        return response(compact('token'),200);
+
+        try{
+            $user = User::create([
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'password' => bcrypt($request->get('password')),
+            ]);
+            if($user){
+                return response([
+                    "status" => true,
+                    "message" => "User created succefully"
+                ], 200);
+            }
+        }catch(\Illuminate\Database\QueryException $error){
+            return [
+                'status' => false,
+                'message' =>$error->errorInfo[2]
+            ];
+        }
     }
 
     /**
@@ -47,14 +60,14 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255',
-            'password'=> 'required'
+            'password' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
         $credentials = $request->only('email', 'password');
         try {
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
         } catch (JWTException $e) {

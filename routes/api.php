@@ -52,3 +52,7 @@ Route::post('user/login','UserController@login');
 // verify token ====================
 // =========================================
 Route::post('verify/token','UserController@verify')->middleware('jwt-validation');
+// =========================================
+// Adding comment to films =================
+// =========================================
+Route::post('comment/add','CommentController@addComment');
