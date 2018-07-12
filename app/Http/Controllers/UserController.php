@@ -75,4 +75,26 @@ class UserController extends Controller
         }
         return response()->json(compact('token'));
     }
+
+    /**
+     * Title:login
+     * Description: function to login user in portal
+     * @param $request paramer
+     * @return
+     */
+    public function verify(Request $request)
+    {
+        $token = $request->header('Authorization');
+        $decryptedToken = JWTAuth::toUser($token);
+        if($decryptedToken){
+            return response([
+                "token"=>$decryptedToken
+            ],200);
+        }else{
+            return response([
+                "status"=>false,
+                "message"=>"Token has expired"
+            ],200);
+        }
+    }
 }

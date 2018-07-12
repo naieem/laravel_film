@@ -13,8 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group([
+    'prefix' => 'auth'
+], function () {
+
+    Route::post('login', 'AuthController@login');
+    Route::get('logout', 'AuthController@logout');
+    Route::get('getRefreshToken', 'AuthController@getRefreshToken');
+    Route::get('getLoggedInUserInfo', 'AuthController@getLoggedInUserInfo');
+
 });
 // =========================================
 // getting all films =======================
@@ -51,7 +58,7 @@ Route::post('user/login','UserController@login');
 // =========================================
 // verify token ====================
 // =========================================
-Route::post('verify/token','UserController@verify')->middleware('jwt-validation');
+Route::post('verify/token','UserController@verify');
 // =========================================
 // Adding comment to films =================
 // =========================================
