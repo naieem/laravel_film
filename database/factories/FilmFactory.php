@@ -8,9 +8,8 @@ $factory->define(App\Film::class, function (Faker $faker) {
         'Description' => $faker->paragraph,
         'RealeaseDate'=>$faker->dateTime,
         'Rating'=>$faker->randomFloat(null,1,5),
-        'TicketPrice'=>$faker->randomFloat(),
+        'TicketPrice'=>$faker->randomFloat(null,3,7),
         'Country'=>$faker->country,
-        'Genre' => $faker->address,
         'Slug' => $faker->slug(6,true),
         'Photo'=> $faker->imageUrl()
     ];
