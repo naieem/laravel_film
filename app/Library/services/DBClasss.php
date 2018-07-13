@@ -11,6 +11,7 @@ use App\Film;
 use App\Comment;
 use App\Genre;
 use Illuminate\Http\Request;
+use Validator;
 
 class DBClasss
 {
@@ -107,43 +108,62 @@ class DBClasss
     public function insertNewFilm($request)
     {
         $film = new Film();
-        $film->Name = $request->Name;
-        $film->Description = $request->Description;
-        $film->Rating = $request->Rating;
-        $film->RealeaseDate = $request->RealeaseDate;
-        $film->TicketPrice = $request->TicketPrice;
-        $film->Country = $request->Country;
-        $film->Slug = $request->Slug;
-        $film->Photo = $request->Photo;
-        // create genre array for inserting
-        $genreList = $this->createGenreArray($request->Genre);
-        // creating genre array for inserting done
-        try {
-            $isSaved = $film->save();
-            if ($isSaved) {
-                // if there is genre to save
-                if (isset($genreList) && count($genreList) > 0) {
-                    if ($film->comment()->saveMany($genreList)) {
+        $validator = Validator::make($request->all(),
+            [
+                'Name' => 'required|string|max:255',
+                'Description' => 'required|string',
+                'Rating' => 'required|numeric|between:1,5',
+                'TicketPrice' => 'required|string|max:255',
+                'Country' => 'required|string',
+                'Genre' => 'required',
+                'Slug' => 'required|string',
+                'Photo' => 'required|url',
+                'RealeaseDate' => 'required|date'
+            ],
+            [
+                "url" => "Photo url is not valid"
+            ]);
+        if ($validator->fails()) {
+            return $validator->messages()->first();
+        } else {
+            $film->Name = $request->Name;
+            $film->Description = $request->Description;
+            $film->Rating = $request->Rating;
+            $film->RealeaseDate = $request->RealeaseDate;
+            $film->TicketPrice = $request->TicketPrice;
+            $film->Country = $request->Country;
+            $film->Slug = $request->Slug;
+            $film->Photo = $request->Photo;
+            // create genre array for inserting
+            $genreList = $this->createGenreArray($request->Genre);
+            // creating genre array for inserting done
+            try {
+                $isSaved = $film->save();
+                if ($isSaved) {
+                    // if there is genre to save
+                    if (isset($genreList) && count($genreList) > 0) {
+                        if ($film->comment()->saveMany($genreList)) {
+                            return [
+                                'status' => true,
+                                'message' => 'Film saved succesfully'
+                            ];
+                        }
+                    } // if there is no genre to save
+                    else {
                         return [
                             'status' => true,
-                            'message' => 'Film saved succesfully'
+                            'message' => $genreList
                         ];
                     }
                 }
-                // if there is no genre to save
-                else {
-                    return [
-                        'status' => true,
-                        'message' => $genreList
-                    ];
-                }
+            } catch (\Illuminate\Database\QueryException $error) {
+                return [
+                    'status' => false,
+                    'message' => $error->errorInfo[2]
+                ];
             }
-        } catch (\Illuminate\Database\QueryException $error) {
-            return [
-                'status' => false,
-                'message' => $error->errorInfo[2]
-            ];
         }
+
 
     }
 
@@ -156,7 +176,7 @@ class DBClasss
     {
         $genreList = [];
         foreach ($genreArray as $value) {
-            foreach($value as $key=>$genreTitle){
+            foreach ($value as $key => $genreTitle) {
                 array_push($genreList,
                     new Genre([
                         "title" => $genreTitle
